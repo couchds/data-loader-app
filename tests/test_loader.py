@@ -8,6 +8,7 @@ from data_loader.loader import get_data_loader, DataLoader
 # * Integration - these are meant (FOR NOW) to be run locally
 
 # TODO: Include integration tests in CI process
+# TODO: Split unit/integration
 
 @pytest.fixture(scope="function")
 def reset_singleton():
