@@ -1,5 +1,8 @@
 # Data Loader App (DLA)
 
+##
+This is a simple tool to map, transform and load data from various sources (flat files, e.g.) into some target database (for now, just the goal is to just support relational DBs).
+
 ## Getting started
 Create a new Python virtual environment with the command:
 ```bash

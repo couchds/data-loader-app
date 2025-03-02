@@ -1,7 +1,7 @@
 import pytest
 import os
 from unittest.mock import patch
-from data_loader.loader import DataLoader
+from data_loader.loader import get_data_loader, DataLoader
 
 # Two pytest markers used:
 # * Unit - these are to be run in CI process
@@ -41,6 +41,24 @@ def test_database_url(reset_singleton):
     loader = DataLoader()
     db_url = loader.get_db_url()
     assert "mysql" in db_url or "postgresql" in db_url, "DB URL should be for MySQL or PostgreSQL"
+
+@patch.dict(os.environ, {
+    "DB_TYPE": "mysql",
+    "DB_HOST": "localhost",
+    "DB_PORT": "3306",
+    "DB_NAME": "test_db",
+    "DB_USER": "test_user",
+    "DB_PASSWORD": "test_pass"
+})
+@pytest.mark.unit
+def test_lazy_initialization(reset_singleton):
+    """Test that DataLoader is not initialized until first accessed."""
+    from data_loader.loader import _data_loader
+    assert _data_loader is None, "DataLoader should not be initialized on import"
+    
+    # Now access it
+    loader = get_data_loader()
+    assert loader is not None, "DataLoader should be initialized when accessed"
 
 @patch.dict(os.environ, {
     "DB_TYPE": "mysql",

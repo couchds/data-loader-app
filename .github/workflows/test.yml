@@ -9,6 +9,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      DB_TYPE: "mysql"
+      DB_HOST: "localhost"
+      DB_PORT: "3306"
+      DB_NAME: "test_db"
+      DB_USER: "test_user"
+      DB_PASSWORD: "test_pass"
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3

@@ -8,7 +8,6 @@ from sqlalchemy import create_engine
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
 load_dotenv()
 
 class DataLoader:
@@ -16,7 +15,11 @@ class DataLoader:
     _instance = None
     
     def __new__(cls):
-        """When creating the object, ensure an instance does not already exist."""
+        """
+        Creates DataLoader object.
+        
+        Ensures an instance does not already exist.
+        """
         if cls._instance is None:
             cls._instance = super(DataLoader, cls).__new__(cls)
             cls._instance.init_db()
@@ -59,4 +62,11 @@ class DataLoader:
         self.engine = create_engine(db_url) # TODO: Enable pooling
         logger.info('Target DB initialized!')
 
-data_loader = DataLoader()
+_data_loader = None
+
+def get_data_loader():
+    """Lazy initialization of DataLoader."""
+    global _data_loader
+    if _data_loader is None:
+        _data_loader = DataLoader()
+    return _data_loader
