@@ -68,7 +68,7 @@ class DataLoader:
             logger.error(f"❌ Failed to load mappings: {e}")
             raise e
     
-    def process_csv(self, mapping_file: str, dataset_name: str):
+    def process_csv(self, mapping_file: str, dataset_name: str, load_path: str):
         """
         Reads a CSV file, applies mappings, and writes it to the target database table.
         
@@ -82,30 +82,26 @@ class DataLoader:
             raise ValueError(f"❌ Dataset '{dataset_name}' not found in mapping file.")
         
         dataset_config = mappings[dataset_name]
-        csv_path = dataset_config["csv_path"]
         table_name = dataset_config["table_name"]
         column_mappings = dataset_config["column_mappings"]
 
         try:
-            df = pd.read_csv(csv_path)
-            logger.info(f"✅ Loaded {len(df)} rows from {csv_path}")
+            df = pd.read_csv(load_path)
+            logger.info(f"✅ Loaded {len(df)} rows from {load_path}")
         except Exception as e:
-            logger.error(f"❌ Failed to read CSV {csv_path}: {e}")
+            logger.error(f"❌ Failed to read CSV {load_path}: {e}")
             raise e
 
         df.rename(columns=column_mappings, inplace=True)
         df = df[list(column_mappings.values())]  # Keep only mapped columns
 
-        df.show()
-
-        # TODO: come back to this
-        #try:
-        #    with self.engine.connect() as conn:
-        #        df.to_sql(table_name, conn, if_exists="append", index=False)
-        #    logger.info(f"✅ Successfully inserted {len(df)} rows into {table_name}")
-        #except Exception as e:
-        #    logger.error(f"❌ Failed to insert data into {table_name}: {e}")
-        #    raise e
+        try:
+            with self.engine.connect() as conn:
+                df.to_sql(table_name, conn, if_exists="append", index=False)
+            logger.info(f"✅ Successfully inserted {len(df)} rows into {table_name}")
+        except Exception as e:
+            logger.error(f"❌ Failed to insert data into {table_name}: {e}")
+            raise e
 
     def init_db(self):
         """Initialize connection to target database."""

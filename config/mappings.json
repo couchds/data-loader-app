@@ -1,6 +1,5 @@
 {
-    "sales_data": {
-        "csv_path": "data/raw/sales.csv",
+    "sales": {
         "table_name": "sales_table",
         "column_mappings": {
             "Order ID": "order_id",
