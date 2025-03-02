@@ -26,7 +26,6 @@ def load_dataset(dataset_name, data_path):
         click.echo(f"❌ Failed to load mappings: {e}")
         return
 
-    # Check if dataset exists in mappings
     if dataset_name not in mappings:
         click.echo(f"❌ Dataset '{dataset_name}' not found in mappings.json")
         return
