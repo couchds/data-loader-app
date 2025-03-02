@@ -84,6 +84,11 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
           pip install pytest pymysql
+      
+      - name: Install Data Loader CLI
+        run: |
+          source venv/bin/activate
+          pip install -e .
 
       - name: Wait for MySQL to Be Ready
         run: |
