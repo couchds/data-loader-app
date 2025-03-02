@@ -11,8 +11,8 @@ DB_NAME = os.getenv("DB_NAME", "test_db")
 @pytest.mark.integration
 def test_cli_data_loader():
     """Test CLI to ensure data is loaded correctly into MySQL."""
-    test_csv_path = "tests/data/sales.csv"
-    dataset_name = "sales"
+    test_csv_path = "tests/data/raw/sales.csv"
+    mappings_path = "tests/data/mappings/sales.json"
 
     # Ensure database is clean before running test
     conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
@@ -23,7 +23,7 @@ def test_cli_data_loader():
 
     # cli command
     result = subprocess.run(
-        ["data_loader", "--dataset_name", dataset_name, "--data_path", test_csv_path],
+        ["data_loader", "--data_path", test_csv_path, "--mappings", mappings_path],
         capture_output=True,
         text=True
     )

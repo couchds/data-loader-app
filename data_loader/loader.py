@@ -68,28 +68,25 @@ class DataLoader:
             logger.error(f"❌ Failed to load mappings: {e}")
             raise e
     
-    def process_csv(self, mapping_file: str, dataset_name: str, load_path: str):
+    def process_csv(self, dataset_config: dict):
         """
         Reads a CSV file, applies mappings, and writes it to the target database table.
         
         Args:
-            mapping_file (str): Path to the mapping JSON file.
-            dataset_name (str): Key name of the dataset inside the mapping file.
+            dataset_config (dict): A dictionary with keys:
+                - "csv_path": Path to the CSV file.
+                - "table_name": Name of the target database table.
+                - "column_mappings": Mapping of CSV columns to DB columns.
         """
-        mappings = self.load_mappings(mapping_file)
-        
-        if dataset_name not in mappings:
-            raise ValueError(f"❌ Dataset '{dataset_name}' not found in mapping file.")
-        
-        dataset_config = mappings[dataset_name]
+        csv_path = dataset_config["csv_path"]
         table_name = dataset_config["table_name"]
         column_mappings = dataset_config["column_mappings"]
-
+        
         try:
-            df = pd.read_csv(load_path)
-            logger.info(f"✅ Loaded {len(df)} rows from {load_path}")
+            df = pd.read_csv(csv_path)
+            logger.info(f"✅ Loaded {len(df)} rows from {csv_path}")
         except Exception as e:
-            logger.error(f"❌ Failed to read CSV {load_path}: {e}")
+            logger.error(f"❌ Failed to read CSV {csv_path}: {e}")
             raise e
 
         df.rename(columns=column_mappings, inplace=True)

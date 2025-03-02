@@ -1,0 +1,9 @@
+{
+    "table_name": "sales_table",
+    "column_mappings": {
+        "Order ID": "order_id",
+        "Customer Name": "customer_name",
+        "Amount": "total_amount",
+        "Purchase Date": "purchase_date"
+    }
+}
