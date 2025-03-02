@@ -1,0 +1,41 @@
+name: Run Unit Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      DB_TYPE: "mysql"
+      DB_HOST: "localhost"
+      DB_PORT: "3306"
+      DB_NAME: "test_db"
+      DB_USER: "test_user"
+      DB_PASSWORD: "test_pass"
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install Dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run Unit Tests
+        env:
+          PYTHONPATH: ${{ github.workspace }} # TODO: Is this needed long-term?
+        run: |
+          source venv/bin/activate
+          pytest -m unit
