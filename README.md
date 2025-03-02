@@ -34,3 +34,10 @@ Run tests:
 PYTHONPATH=$(pwd) pytest -m unit # unit tests
 PYTHONPATH=$(pwd) pytest -m integration # integration tests
 ```
+
+
+### CLI Usage
+Example of current CLI usage (after running `pip install` command above)
+```bash
+data_loader --dataset_name sales --data_path data/examples/sales.csv
+```
