@@ -7,9 +7,9 @@ from data_loader.loader import get_data_loader
 MAPPINGS_FILE = os.path.join(os.path.dirname(__file__), "../config/mappings.json")
 
 @click.command()
-@click.option("--data_path", required=True, help="Path to data to map")
+@click.option("--data-dir", required=True, type=click.Path(exists=True), help="Directory where dependency TSV files are stored")
 @click.option("--mappings", required=True, type=click.Path(exists=True), help="Path to the mappings JSON file")
-def load_dataset(data_path, mappings):
+def load_dataset(mappings, data_dir):
     """
     CLI command to load mappings and process a given dataset.
     
@@ -17,33 +17,10 @@ def load_dataset(data_path, mappings):
         data_loader --dataset_name sales --data path/to/file.csv
     """
     data_loader = get_data_loader()
-
     try:
-        with open(mappings, "r") as f:
-            mapping_config = json.load(f)
-    except Exception as e:
-        click.echo(f"❌ Failed to load mappings from {mappings}: {e}")
-        print('eep')
-        return
-
-    required_keys = {"table_name", "column_mappings"}
-    if not required_keys.issubset(mapping_config.keys()):
-        click.echo(f"❌ Invalid mappings format in {mappings}. Expected keys: {required_keys}")
-        return
-
-    table_name = mapping_config["table_name"]
-    column_mappings = mapping_config["column_mappings"]
-    
-    dataset_config = {
-        "csv_path": data_path,
-        "table_name": table_name,
-        "column_mappings": column_mappings
-    }
-
-    try:
-        click.echo(f"Loading dataset from {data_path} using mappings {mappings}")
-        data_loader.process_csv(dataset_config)
-        click.echo(f"Successfully loaded dataset into table: {table_name}")
+        click.echo(f"🚀 Processing dataset using mappings: {mappings}")
+        data_loader.process_mappings(mappings, data_dir)
+        click.echo(f"✅ Successfully processed dataset!")
     except Exception as e:
         click.echo(f"❌ Error processing dataset: {e}")
 
