@@ -7,6 +7,8 @@ from data_loader.loader import get_data_loader, DataLoader
 # * Unit - these are to be run in CI process
 # * Integration - these are meant (FOR NOW) to be run locally
 
+# TODO: Include integration tests in CI process
+
 @pytest.fixture(scope="function")
 def reset_singleton():
     """DataLoader should be re-instantiated after every test"""
