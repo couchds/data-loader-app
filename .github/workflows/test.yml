@@ -1,4 +1,4 @@
-name: Run Unit Tests
+name: Run Unit and Integration Tests
 
 on:
   pull_request:
@@ -65,9 +65,9 @@ jobs:
       DB_TYPE: mysql
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
-      DB_NAME: test_data_loader_db
-      DB_USER: test_data_user
-      DB_PASSWORD: test_password
+      DB_NAME: test_db
+      DB_USER: test_user
+      DB_PASSWORD: test_pass
 
     steps:
       - name: Checkout Repository
