@@ -15,3 +15,9 @@ Install requirements:
 ```bash
 pip install -r requirements.txt
 ```
+
+Run tests:
+```bash
+PYTHONPATH=$(pwd) pytest -m unit # unit tests
+PYTHONPATH=$(pwd) pytest -m integration # integration tests
+```

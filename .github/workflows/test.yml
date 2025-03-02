@@ -26,6 +26,8 @@ jobs:
           pip install pytest
 
       - name: Run Unit Tests
+        env:
+          PYTHONPATH: ${{ github.workspace }} # TODO: Is this needed long-term?
         run: |
           source venv/bin/activate
           pytest -m unit
